@@ -1,66 +1,141 @@
-# HIRELY CAREER SETUP GUIDE
+HIRELY career Placement Assistance Portal
 
-Welcome to the Hirely career , a comprehensive web application for managing student placements,resumes , interview preparationsbuilt cleanly with django and sthyles beautifully with tailwind css.
+Hirely is a full-stack Django web application designed to streamline student placement preparation. It centralizes resume analysis, job tracking, and interview practice into one structured platform built with Django and styled using Tailwind CSS.
 
-This guide covers everything you need to start the project.
+# Project description
 
-## Prerequisites
-Before you begin, ensure you have the following installed on your system:
-- *Python 3.8+*: Ensure python is added to your environment paths.
-- *Pip*: The Python package manager.
+Hirely solves a common student problem — placement preparation tools are scattered across multiple platforms.
+This system provides a centralized portal where students can:
 
-## 1. Local Environment Setup
+Analyze resumes using ATS logic
 
-Clone or place the project folder on your machine, then navigate inside the placement_portal directory where manage.py lives.
+Take mock interview tests
 
-### Create a Virtual Environment (Recommended)
-It is highly recommended to isolate the project dependencies.
-cmd
+View job opportunities filtered by qualification
+
+Receive structured placement guidance
+
+The application includes role-based routing for Admins and Students.
+
+# Tech stack
+
+Python 3.8+
+
+Django
+
+Django AllAuth (Authentication)
+
+Tailwind CSS
+
+SQLite (Default Database)
+
+HTML5
+
+CSS3
+
+# core features 
+
+ Authentication System
+
+Secure login (username/email)
+
+Password reset (console-based backend)
+
+Role-based routing (Admin / Student)
+
+ ATS Resume Checker
+
+PDF parsing
+
+Stopword removal using NLTK
+
+Keyword matching
+
+Resume scoring logic
+
+ Mock Interview System
+
+Randomized question selection
+
+10-question automatic test generation
+
+Auto evaluation & scoring
+
+ Job Portal
+
+Qualification-based job filtering
+
+Admin bulk CSV upload
+
+Structured job listings
+
+ Admin Dashboard
+
+Job CSV bulk upload
+
+Mock Question CSV bulk upload
+
+Controlled admin panel access
+# installation commands 
+cd placement_portal
+ Create Virtual Environment
+
 python -m venv venv
 venv\Scripts\activate
 
-
-
-### Install Dependencies
-Run the following command to securely fetch and install all required modules exactly mapped in our setup list:
-cmd
+ Install Dependencies
 pip install -r requirements.txt
 
-Note: Key libraries installed include django, django-allauth, PyPDF2, nltk, and custom machine learning packages for resume checking.
-
-## 2. Database Creation & Syncing
-Django provides an easy built-in SQLite database by default. Execute these to sync all tables:
-
-cmd
+ Database Setup
 python manage.py makemigrations
 python manage.py migrate
 
-
-## 3. Creating the Superuser (Admin Access)
-To access the Admin Dashboard (needed for adding jobs via CSV, mock questions, etc.), you must create a standard superuser.
-
-cmd
+ Create Superuser (Admin Access)
 python manage.py createsuperuser
 
-Follow the prompts to configure an Administrator Username, Email, and Password. 
+Follow prompts to set username, email, and password.
 
-## 4. Required Data Packages for Resume Checker
-The ATS Resume checker utilizes nltk (Natural Language Toolkit) behind the scenes to verify stopwords and compute matching algorithms. *You must download these exact datasets into python once before your first run:*
+ Required NLTK Setup (Resume Checker)
 
-Open your python shell via terminal:
-cmd
+Open Python shell:
+
 python
 
-Execute these lines exactly:
-python
+Then run:
+
 import nltk
 nltk.download('punkt')
 nltk.download('punkt_tab')
 nltk.download('stopwords')
 exit()
 
+This is mandatory before first run.
 
-## 5. Running the Application
+# run the application
+python manage.py runserver
+
+Open browser:
+
+http://127.0.0.1:8000/
+
+# screenshots
+
+![Login Page](C:\Users\User\Pictures\Screenshots\Screenshot 2026-02-28 100413.png)
+![Home Page](C:\Users\User\Pictures\Screenshots\Screenshot 2026-02-28 100434.png)
+![Mock Test](C:\Users\User\Pictures\Screenshots\Screenshot 2026-02-28 100500.png)
+![Result](C:\Users\User\Pictures\Screenshots\Screenshot 2026-02-28 100552.png)
+
+# TEAM MEMBERS 
+
+ASNA O S 
+JOSIYA ANTONY
+(Project Designed & Developed)
+
+# Licence
+
+This project is licensed under the MIT License.
+
+## . Running the Application
 Spin up the local development server:
 cmd
 python manage.py runserver
