@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-8">
+        <div class="bg-indigo-600 px-8 py-6 text-white flex justify-between items-center">
+            <div>
+                <h2 class="text-2xl font-bold tracking-tight">Technical Assessment</h2>
+                <p class="text-indigo-100 mt-1">Complete all questions to evaluate your readiness</p>
+            </div>
+            <div class="hidden md:flex items-center space-x-2 bg-indigo-700 px-4 py-2 rounded-lg">
+                <svg class="w-5 h-5 text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span class="font-mono font-medium tracking-wider">Test Mode</span>
+            </div>
+        </div>
+
+        <form method="post" class="p-8">
+            {% csrf_token %}
+
+            <div class="space-y-10">
+                {% for q in questions %}
+                <div
+                    class="question-block relative pl-6 border-l-2 {% if forloop.last %}border-transparent{% else %}border-gray-100 pb-10{% endif %}">
+                    <!-- Number marker -->
+                    <div
+                        class="absolute -left-3 top-0 w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-xs ring-4 ring-white">
+                        {{ forloop.counter }}
+                    </div>
+
+                    <p class="font-semibold text-gray-900 text-lg mb-4 leading-relaxed">{{ q.text }}</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <label
+                            class="relative flex items-center p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-indigo-50 hover:border-indigo-200 transition-colors group">
+                            <input type="radio" name="question_{{ q.id }}" value="A"
+                                class="w-5 h-5 text-indigo-600 border-gray-300 focus:ring-indigo-500 rounded-full"
+                                required>
+                            <span class="ml-3 flex flex-col">
+                                <span class="block text-sm font-medium text-gray-900">A) {{ q.option_a }}</span>
+                            </span>
+                        </label>
+
+                        <label
+                            class="relative flex items-center p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-indigo-50 hover:border-indigo-200 transition-colors group">
+                            <input type="radio" name="question_{{ q.id }}" value="B"
+                                class="w-5 h-5 text-indigo-600 border-gray-300 focus:ring-indigo-500 rounded-full"
+                                required>
+                            <span class="ml-3 flex flex-col">
+                                <span class="block text-sm font-medium text-gray-900">B) {{ q.option_b }}</span>
+                            </span>
+                        </label>
+
+                        <label
+                            class="relative flex items-center p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-indigo-50 hover:border-indigo-200 transition-colors group">
+                            <input type="radio" name="question_{{ q.id }}" value="C"
+                                class="w-5 h-5 text-indigo-600 border-gray-300 focus:ring-indigo-500 rounded-full"
+                                required>
+                            <span class="ml-3 flex flex-col">
+                                <span class="block text-sm font-medium text-gray-900">C) {{ q.option_c }}</span>
+                            </span>
+                        </label>
+
+                        <label
+                            class="relative flex items-center p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-indigo-50 hover:border-indigo-200 transition-colors group">
+                            <input type="radio" name="question_{{ q.id }}" value="D"
+                                class="w-5 h-5 text-indigo-600 border-gray-300 focus:ring-indigo-500 rounded-full"
+                                required>
+                            <span class="ml-3 flex flex-col">
+                                <span class="block text-sm font-medium text-gray-900">D) {{ q.option_d }}</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center py-12 px-4">
+                    <svg class="mx-auto h-12 w-12 text-gray-300 mb-4" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+                        </path>
+                    </svg>
+                    <h3 class="text-lg font-medium text-gray-900">Assessment not configured</h3>
+                    <p class="mt-1 text-gray-500">No questions are currently available in the system.</p>
+                </div>
+                {% endfor %}
+            </div>
+
+            {% if questions %}
+            <div class="mt-10 pt-6 border-t border-gray-100 flex items-center justify-between">
+                <p class="text-sm text-gray-500">Double check your answers before submitting.</p>
+                <button type="submit"
+                    class="inline-flex justify-center py-3 px-8 border border-transparent shadow-sm text-base font-bold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-transform transform hover:-translate-y-0.5">
+                    Submit Assessment
+                </button>
+            </div>
+            {% endif %}
+        </form>
+    </div>
+</div>
+
+<style>
+    /* Styling for selected radio buttons */
+    input[type="radio"]:checked+span {
+        font-weight: 700;
+        color: #4f46e5;
+    }
+
+    input[type="radio"]:checked {
+        border-color: #4f46e5;
+        background-color: #4f46e5;
+    }
+</style>
+{% endblock %}

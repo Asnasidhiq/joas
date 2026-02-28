@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placement Portal</title>
+    <!-- Use Tailwind CSS for modern rapid styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 flex flex-col min-h-screen">
+
+    <nav class="bg-indigo-600 text-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="{% url 'dashboard' %}" class="font-bold text-xl tracking-tight">Hirely Careers</a>
+                </div>
+                <div class="flex space-x-4">
+                    {% if user.is_authenticated %}
+                    {% if user.is_superuser %}
+                    <a href="{% url 'admin_dashboard' %}"
+                        class="hover:bg-indigo-700 px-3 py-2 rounded-md transition">Admin Dashboard</a>
+                    {% else %}
+                    <a href="{% url 'job_list' %}" class="hover:bg-indigo-700 px-3 py-2 rounded-md transition">Jobs</a>
+                    <a href="{% url 'take_test' %}" class="hover:bg-indigo-700 px-3 py-2 rounded-md transition">Mock
+                        Test</a>
+                    <a href="{% url 'check_resume' %}"
+                        class="hover:bg-indigo-700 px-3 py-2 rounded-md transition">Resume Check</a>
+                    {% endif %}
+                    <form method="post" action="{% url 'logout' %}" class="inline">
+                        {% csrf_token %}
+                        <button type="submit"
+                            class="bg-red-500 hover:bg-red-600 px-3 py-2 rounded-md transition cursor-pointer">Logout</button>
+                    </form>
+                    {% else %}
+                    <a href="{% url 'login' %}" class="hover:bg-indigo-700 px-3 py-2 rounded-md transition">Login</a>
+                    <a href="{% url 'register' %}"
+                        class="bg-white text-indigo-600 hover:bg-gray-100 px-3 py-2 rounded-md transition">Register</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+        {% if messages %}
+        <div class="mb-6 space-y-2">
+            {% for message in messages %}
+            <div
+                class="p-4 rounded-lg shadow-sm flex items-center justify-between {% if message.tags == 'success' %}bg-green-50 text-green-800 border-l-4 border-green-500{% elif message.tags == 'warning' %}bg-yellow-50 text-yellow-800 border-l-4 border-yellow-500{% elif message.tags == 'error' %}bg-red-50 text-red-800 border-l-4 border-red-500{% else %}bg-blue-50 text-blue-800 border-l-4 border-blue-500{% endif %}">
+                <p class="font-medium">{{ message }}</p>
+                <button onclick="this.parentElement.style.display='none'"
+                    class="text-opacity-50 hover:text-opacity-100 transition-opacity">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center text-sm">
+            &copy; {% now "Y" %} Hirely Careers. All rights reserved.
+        </div>
+    </footer>
+
+</body>
+
+</html>

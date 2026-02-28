@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="mb-8 flex justify-between items-end">
+    <div>
+        <h2 class="text-3xl font-extrabold text-gray-900 tracking-tight">
+            Your Performance History
+        </h2>
+        <p class="mt-2 text-lg text-gray-500">
+            Track your mock interview progress over time.
+        </p>
+    </div>
+
+    <a href="{% url 'take_test' %}"
+        class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 transition">
+        <svg class="mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+        </svg>
+        Take New Test
+    </a>
+</div>
+
+<div class="space-y-6">
+    {% for r in results %}
+
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 
+                flex flex-col md:flex-row md:items-center justify-between 
+                hover:shadow-md transition relative overflow-hidden">
+
+        <!-- Side Color Indicator -->
+        <div class="absolute top-0 left-0 w-2 h-full
+            {% if r.percentage >= 80 %}
+                bg-green-500
+            {% elif r.percentage >= 50 %}
+                bg-yellow-500
+            {% else %}
+                bg-red-500
+            {% endif %}">
+        </div>
+
+        <!-- Left Section -->
+        <div class="pl-4 mb-4 md:mb-0">
+
+            <p class="text-sm font-medium text-gray-500 mb-1">
+                {{ r.date_taken|date:"d M Y, h:i A" }}
+            </p>
+
+            <p class="text-xl font-bold text-gray-900">
+                {{ r.test_name|default:"General Technical Screen" }}
+            </p>
+
+            <p class="text-sm text-gray-400 mt-1">
+                {{ r.percentage }}% Performance
+            </p>
+
+        </div>
+
+        <!-- Right Section -->
+        <div class="flex items-center space-x-6">
+
+            <!-- Score -->
+            <div class="text-right">
+                <p class="text-sm text-gray-500 font-medium mb-1">Final Score</p>
+
+                <div class="flex items-baseline">
+                    <span class="text-3xl font-black
+                        {% if r.percentage >= 80 %}
+                            text-green-600
+                        {% elif r.percentage >= 50 %}
+                            text-yellow-600
+                        {% else %}
+                            text-red-600
+                        {% endif %}">
+                        {{ r.score }}
+                    </span>
+                    <span class="text-lg text-gray-400 ml-1">
+                        / {{ r.total }}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="h-12 w-px bg-gray-200 hidden md:block"></div>
+
+            <!-- Status Badge -->
+            <div class="w-40 text-center">
+                {% if r.percentage >= 80 %}
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold 
+                             bg-green-100 text-green-800">
+                    Ready for Placement
+                </span>
+
+                {% elif r.percentage >= 50 %}
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold 
+                             bg-yellow-100 text-yellow-800">
+                    Needs Improvement
+                </span>
+
+                {% else %}
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold 
+                             bg-red-100 text-red-800">
+                    Critical Weakness
+                </span>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+
+    {% empty %}
+
+    <div class="text-center bg-white rounded-2xl border border-dashed 
+                border-gray-300 py-16 px-4">
+
+        <h3 class="text-lg font-medium text-gray-900">
+            No tests taken yet
+        </h3>
+
+        <p class="mt-1 text-gray-500">
+            Get started by taking your first mock technical interview.
+        </p>
+
+        <div class="mt-6">
+            <a href="{% url 'take_test' %}" class="inline-flex items-center px-4 py-2 text-sm font-medium 
+                       rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+                Start Mock Test
+            </a>
+        </div>
+    </div>
+
+    {% endfor %}
+</div>
+
+{% endblock %}
